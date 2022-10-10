@@ -1,0 +1,24 @@
+{
+  "name": "project_e-shopping",
+  "version": "1.0.0",
+  "description": "project is about online-shoppingCard",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaibhavpimpalkar/project_E-shopping.git"
+  },
+  "author": "Group20",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vaibhavpimpalkar/project_E-shopping/issues"
+  },
+  "homepage": "https://github.com/vaibhavpimpalkar/project_E-shopping#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.6.5",
+    "nodemon": "^2.0.20"
+  }
+}
