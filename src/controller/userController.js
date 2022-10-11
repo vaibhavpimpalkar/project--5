@@ -2,6 +2,7 @@ const userModel = require('../models/userModel');
 const validation = require('../validator/validation');
 const AWS = require('../AWS/aws-sdk.js');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>CreateUser>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
 const createUser = async function (req, res) {
