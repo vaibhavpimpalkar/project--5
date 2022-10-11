@@ -77,47 +77,63 @@ const createUser = async function (req, res) {
         };
         // registering a new user
         const newUser = await userModel.create(userData);
-
-        res.status(201).send({
-            status: true,
-            message: "User successfully registered",
-            data: newUser,
-        });
+        res.status(201).send({ status: true, message: "User successfully registered",data: newUser});
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 };
 
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>userLogin>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
 
-//////////////////////////Get API//////////////////////////
+const login = async function (req, res) {
+    try {
+        const data = req.body;
+        if (!isValidRequest(data)) { return res.status(400).send({ status: false, message: "data is required" }); }
 
-const getUser = async function (req, res) {
+        const userEmail = data.email;
+        const password = data.password;
+        
+
+
+        if (!validation.checkInputsPresent(userEmail)) { return res.status(400).send({ status: false, message: "Email is required" }) }
+        if (!validation.validateEmail(userEmail)) { return res.status(400).send({ status: false, message: "enter a valid email address" }) }
+
+        if (!validation.checkInputsPresent(password)) { return res.status(400).send({ status: false, message: "Password is required" }) }
+        if (!validation.isValidPassword(password)) { return res.status(400).send({ status: false, message: "Password should be in right format" }) }
+
+        const user = await userModel.findOne({ email: userEmail, password: password });
+        if (!user) { return res.status(401).send({ status: false, message: "no user found " }) }
+
+        //......................creating a jsonWebToken and sending it to response header and body.....................//
+
+        let token = jwt.sign({
+            userId: user._id.toString(),
+            iat:Math.floor(Date.now()/1000)
+        },
+            "group20project5", { expiresIn: "1hr" }
+        );
+
+        res.header("x-api-key", token);
+        return res.status(200).send({ status: true, message: "User Login Successfully", data: token })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).send({ message: error.message })
+    }
+}
+
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>getUserDetails>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
+
+const getUserProfile = async function (req, res) {
   try {
     const userId = req.params.userId;
-    const body = req.body;
-
-    // if (!(validation.isValidobjectId(userId) && validation.isValid(userId))) {
-    //   return res
-    //     .status(400)
-    //     .send({ status: false, msg: "userId is not valid" });
-    // }
-    // if (validation.isValidBody(body)) {
-    //   return res
-    //     .status(400)
-    //     .send({ status: false, msg: "body should not be empty" });
-    // }
+    if (!validation.validateId(userId))return res.status(400).send({ status: true, message: "Invalid userId" })
 
     const userData = await userModel.findById({ _id: userId });
-    if (userData) {
-      return res
-        .status(200)
-        .send({ status: true, msg: "user profile details", data: userData });
-    } else {
-      return res
-        .status(404)
-        .send({ status: false, msg: "userid does not exist" });
-    }
+    if (!userData) return res.status(404).send({ status: false, msg: "No User Profile Details available with this userId"});
+    return res.status(200).send({ status: true, msg: "User Profile details",data:userData });
   } catch (err) {
     return res.status(500).send({ status: false, msg: err.message });
   }
@@ -127,5 +143,4 @@ const getUser = async function (req, res) {
 
 
 
-module.exports.createUser = createUser;
-module.exports.getUser = getUser;
+module.exports = {createUser,getUserProfile,login}
