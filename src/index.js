@@ -1,11 +1,12 @@
 const express = require('express');
-
-const route = require('./route/route.js');
+const route = require('./routes/route.js');
 const {default: mongoose}  = require('mongoose');
+const multer = require('multer');
 
 const app = express();
 
 app.use(express.json());
+app.use(multer().any());
 
 mongoose.connect("mongodb+srv://DipaliBohara:80761668@cluster0.4wyyohq.mongodb.net/dipaliProject5"
 , {
