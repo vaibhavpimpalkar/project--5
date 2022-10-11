@@ -36,20 +36,22 @@ const createUser = async function (req, res) {
         if (!validation.checkInputsPresent(password)) return res.status(400).send({ status: false, msg: "password required to create new user" });
         if(!validation.isValidPassword(password))return res.status(400).send({status:false,msg:"Invalid Password"})
 
-
-        // if (address) {
-        //     if (!validation.checkInputsPresent(address[shipping][street])){ return res.status(400).send({ status: false, message: "invalid street" }) }
-        //     if (!validation.checkInputsPresent(address[shipping][city]) || !validation.validateName(address[shipping][city])) { return res.status(400).send({ status: false, message: "invalid city" }); }
-        //     if (! /^\+?([1-9]{1})\)?([0-9]{5})$/.test(address[shipping][pincode]) && !validation.checkInputsPresent(address[shipping][pincode])) { return res.status(400).send({ status: false, message: "invalid pin" }) }
-
-        // }
-
-        // if (address.billing) {
-        //     if (!validation.checkInputsPresent(address.billing.street)) { return res.status(400).send({ status: false, message: "invalid street" }) }
-        //     if (!validation.checkInputsPresent(address.billing.city) || !validation.validateName(address.billing.city)) { return res.status(400).send({ status: false, message: "invalid city" }); }
-        //     if (! /^\+?([1-9]{1})\)?([0-9]{5})$/.test(address.billing.pincode) && !validation.checkInputsPresent(address.billing.pincode)) { return res.status(400).send({ status: false, message: "invalid pin" }) }
-
-        // }
+        if (!validation.checkInputsPresent(address["shipping"]["street"]))return res.status(400).send({ status: false, message: "street is required" });
+          
+        if (!validation.checkInputsPresent(address["shipping"]["city"]))return res.status(400).send({ status: false, message: "city is required" });
+        
+        if (!validation.checkInputsPresent(address["shipping"]["pincode"]))return res.status(400).send({ status: false, message: "pincode is required" });
+          
+        if (!validation.isValidPincode(address["shipping"]["pincode"])) {return res.status(400).send({ status: false, message: "Invalid pincode" });}
+        
+        if (!validation.checkInputsPresent(address["billing"]["street"]))return res.status(400).send({ status: false, message: "street is required" });
+          
+        if (!validation.checkInputsPresent(address["billing"]["city"]))return res.status(400).send({ status: false, message: "city is required" });
+        
+        if (!validation.checkInputsPresent(address["billing"]["pincode"]))return res.status(400).send({ status: false, message: "pincode is required" });
+          
+        if (!validation.isValidPincode(address["billing"]["pincode"])) {return res.status(400).send({ status: false, message: "Invalid pincode" });}
+        
         if (profileImage && profileImage.length > 0) {
             //upload to s3 and get the uploaded link
             // res.send the link back to frontend/postman

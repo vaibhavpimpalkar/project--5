@@ -27,8 +27,8 @@ const isValidPassword = function (password) {
     return (/^[a-zA-Z0-9!@#$%^&*]{8,15}$/.test(password))
 }
 
-
+const isValidPincode = (pincode) => {return (/^\+?([1-9]{1})\)?([0-9]{5})$/.test(pincode));}
 const validateId = (id) => { return mongoose.isValidObjectId(id); }
 
 
-module.exports = { checkInputsPresent,validateName,validateLogoLink, validateEmail, validateMobileNo, validateId ,isValidPassword}
+module.exports = { checkInputsPresent,validateName,validateLogoLink, validateEmail, validateMobileNo, isValidPincode ,validateId ,isValidPassword}
