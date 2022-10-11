@@ -85,4 +85,45 @@ const createUser = async function (req, res) {
         res.status(500).send({ error: error.message });
     }
 };
+
+
+
+//////////////////////////Get API//////////////////////////
+
+const getUser = async function (req, res) {
+  try {
+    const userId = req.params.userId;
+    const body = req.body;
+
+    // if (!(validation.isValidobjectId(userId) && validation.isValid(userId))) {
+    //   return res
+    //     .status(400)
+    //     .send({ status: false, msg: "userId is not valid" });
+    // }
+    // if (validation.isValidBody(body)) {
+    //   return res
+    //     .status(400)
+    //     .send({ status: false, msg: "body should not be empty" });
+    // }
+
+    const userData = await userModel.findById({ _id: userId });
+    if (userData) {
+      return res
+        .status(200)
+        .send({ status: true, msg: "user profile details", data: userData });
+    } else {
+      return res
+        .status(404)
+        .send({ status: false, msg: "userid does not exist" });
+    }
+  } catch (err) {
+    return res.status(500).send({ status: false, msg: err.message });
+  }
+};
+
+
+
+
+
 module.exports.createUser = createUser;
+module.exports.getUser = getUser;
