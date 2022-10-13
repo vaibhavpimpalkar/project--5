@@ -4,14 +4,10 @@ const mongoose = require('mongoose');
 //** Globally used functions **/
 
 // checking that there is something as input
-const checkInputsPresent = (value) => { return (Object.keys(value).length > 0) };
-
-// validating that the input must be a non-empty string
-// const checkString = (value) => { 
-//      return value.trim().length > 0 };
+const checkInputsPresent = (value) => { return (Object.keys(value).length > 0); }
 
 // function to validate regex formats >  name ,fullName, logoLink, email , mobile, id,password
-const validateName = (name) => { return (/^[a-z]+$/g.test(name)); }
+const validateName = (name) => { return (/^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i.test(name)); }
 
 
 const validateLogoLink = (logoLink) => {
@@ -28,7 +24,12 @@ const isValidPassword = function (password) {
 }
 
 const isValidPincode = (pincode) => {return (/^\+?([1-9]{1})\)?([0-9]{5})$/.test(pincode));}
+
+const isValidImageType = (value) => {return( /image\/png|image\/jpeg|image\/jpg/.test(value));}
+    
+
+
 const validateId = (id) => { return mongoose.isValidObjectId(id); }
 
 
-module.exports = { checkInputsPresent,validateName,validateLogoLink, validateEmail, validateMobileNo, isValidPincode ,validateId ,isValidPassword}
+module.exports = { checkInputsPresent,validateName,validateLogoLink, validateEmail, validateMobileNo, isValidPincode ,validateId ,isValidPassword,isValidImageType}
