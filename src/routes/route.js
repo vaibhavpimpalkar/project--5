@@ -1,6 +1,7 @@
 const express  = require("express")
 const router =express.Router()
 const userController = require('../controller/userController')
+const ProductController = require('../controller/productController');
 const Auth = require('../middleware/auth')
 
 
@@ -10,6 +11,14 @@ router.post('/register',userController.createUser);
 router.post("/login", userController.login)
 router.get('/user/:userId/profile', Auth.authentication,userController.getUserProfile)
 router.put('/user/:userId/profile', Auth.authentication,Auth.authorization ,userController.updateUsersProfile)
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>API's for product>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
+
+router.post('/products', ProductController.createProduct)
+router.get('/products', ProductController.getProduct)
+router.get('/products/:productId', ProductController.getProductsById)
+router.put('/products/:productId', ProductController.updateProductDetails)
+router.delete('/products/:productId', ProductController.deleteProductById)
 
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>AWS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//

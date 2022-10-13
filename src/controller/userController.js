@@ -11,7 +11,7 @@ const createUser = async function (req, res) {
         if (!validation.checkInputsPresent(data))return res.status(400).send({ status: true, message: "Provide Details for Users" })
         
         let profileImage = req.files;
-        if (!validation.checkInputsPresent(data) )return res.status(400).send({ status: true, message: "Provide profileImage for Users" })
+        
         
     //-------------------------------using destructuring fetching data from request body------------------------------//
         let { fname, lname, email, phone, password, address } = data;
@@ -57,14 +57,16 @@ const createUser = async function (req, res) {
           
         if (!validation.isValidPincode(address.billing.pincode)) {return res.status(400).send({ status: false, message: "Invalid pincode" });}
         
-        if (profileImage && profileImage.length > 0) {
+        if (!profileImage || profileImage.length==0)return res.status(400).send({ status: true, message: "Provide profileImage for Users" })
+
+        if(!validation.isValidImageType(profileImage)){
+            return res.status(400).send({status:false, msg:" Only images can be uploaded (jpeg/jpg/png)"})
+    
+        }
             //upload to s3 and get the uploaded link
             // res.send the link back to frontend/postman
             //let uploadedFileURL= await uploadFile( files[0] )
             var uploadedProfilePictureUrl = await AWS.uploadFile(profileImage[0]);
-        } else {
-            res.status(400).send({ msg: "No file found" });
-        }
 
         //console.log(uploadedProfilePictureUrl);
         // password encryption
@@ -84,7 +86,7 @@ const createUser = async function (req, res) {
         const newUser = await userModel.create(userData);
         res.status(201).send({ status: true, message: "User successfully registered",data: newUser});
     } catch (error) {
-        res.status(500).send({ error: error.message });
+        res.status(500).send({ status:flase,error: error.message });
     }
 };
 

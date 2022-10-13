@@ -26,10 +26,14 @@ const isValidPassword = function (password) {
 const isValidPincode = (pincode) => {return (/^\+?([1-9]{1})\)?([0-9]{5})$/.test(pincode));}
 
 const isValidImageType = (value) => {return( /image\/png|image\/jpeg|image\/jpg/.test(value));}
+
+const isValidPrice =(price) => {return (/^[0-9]{1,4}[.]{1}[0-9]{4}$/.test(price))}
+
+const isValidNumber =(value) => {return (typeof(value) === "number" && value >= 0)};
     
 
 
 const validateId = (id) => { return mongoose.isValidObjectId(id); }
 
 
-module.exports = { checkInputsPresent,validateName,validateLogoLink, validateEmail, validateMobileNo, isValidPincode ,validateId ,isValidPassword,isValidImageType}
+module.exports = { checkInputsPresent,validateName,validateLogoLink, validateEmail, validateMobileNo, isValidPincode ,validateId ,isValidPassword,isValidImageType,isValidPrice,isValidNumber}
