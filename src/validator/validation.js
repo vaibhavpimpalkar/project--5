@@ -29,10 +29,12 @@ const isValidPrice =(price) => {return (/^\d+(,\d{3})*(\.\d{1,2})?$/.test(price)
 const isValidNumber =(value) => {return (typeof(value) === Number)};
 
 const isValidCompare =(value) => {return (/^[a-zA-Z]+([\s][a-zA-Z]+)*$/.test(value))};
+
+const isValidinstallments =(installments) => {return (/[0-9]/.test(installments))}
     
 
 
 const validateId = (id) => { return mongoose.Types.ObjectId.isValid(id); }
 
 
-module.exports = { checkInputsPresent,validateName, validateEmail, validateMobileNo,isValidCompare ,isValidPincode ,validateId ,isValidPassword,isValidImageType,isValidPrice,isValidNumber}
+module.exports = { checkInputsPresent,validateName, validateEmail, validateMobileNo,isValidCompare ,isValidPincode ,validateId ,isValidPassword,isValidImageType,isValidPrice,isValidNumber,isValidinstallments}
