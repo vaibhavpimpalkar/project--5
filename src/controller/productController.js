@@ -14,7 +14,7 @@ const createProduct = async function (req, res) {
 
     let { title, description, price, currencyId, currencyFormat,style,availableSizes,isFreeShipping,installments } = data
 
-    if (!validation.checkInputsPresent(title)) {
+    if (!validation.checkInputsPresent(title) || !isValidString(title)) {
         return res.status(400).send({ status: false, msg: "please provide title" })
     }
    

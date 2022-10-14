@@ -10,10 +10,7 @@ const checkInputsPresent = (value) => { return (Object.keys(value).length > 0); 
 const validateName = (name) => { return (/^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i.test(name)); }
 
 
-const validateLogoLink = (logoLink) => {
-    const urlRegex = /(http[s]:\/\/)([a-z\-0-9\/.]+)\.([a-z.]{2,3})\/([a-z0-9\-\/._~:?#\[\]@!$&'()+,;=%]*)([a-z0-9]+\.)(jpg|jpeg|png)/i;
-    return urlRegex.test(logoLink)
-};
+
 
 const validateEmail = (email) => { return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)); }
 
@@ -30,10 +27,12 @@ const isValidImageType = (value) => {return( /image\/png|image\/jpeg|image\/jpg/
 const isValidPrice =(price) => {return (/^\d+(,\d{3})*(\.\d{1,2})?$/.test(price))}
 
 const isValidNumber =(value) => {return (typeof(value) === Number)};
+
+const isValidCompare =(value) => {return (/^[a-zA-Z]+([\s][a-zA-Z]+)*$/.test(value))};
     
 
 
 const validateId = (id) => { return mongoose.Types.ObjectId.isValid(id); }
 
 
-module.exports = { checkInputsPresent,validateName,validateLogoLink, validateEmail, validateMobileNo, isValidPincode ,validateId ,isValidPassword,isValidImageType,isValidPrice,isValidNumber}
+module.exports = { checkInputsPresent,validateName, validateEmail, validateMobileNo,isValidCompare ,isValidPincode ,validateId ,isValidPassword,isValidImageType,isValidPrice,isValidNumber}
