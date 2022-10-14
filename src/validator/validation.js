@@ -27,13 +27,13 @@ const isValidPincode = (pincode) => {return (/^\+?([1-9]{1})\)?([0-9]{5})$/.test
 
 const isValidImageType = (value) => {return( /image\/png|image\/jpeg|image\/jpg/.test(value));}
 
-const isValidPrice =(price) => {return (/^[0-9]{1,4}[.]{1}[0-9]{4}$/.test(price))}
+const isValidPrice =(price) => {return (/^\d+(,\d{3})*(\.\d{1,2})?$/.test(price))}
 
-const isValidNumber =(value) => {return (typeof(value) === "number" && value >= 0)};
+const isValidNumber =(value) => {return (typeof(value) === Number)};
     
 
 
-const validateId = (id) => { return mongoose.isValidObjectId(id); }
+const validateId = (id) => { return mongoose.Types.ObjectId.isValid(id); }
 
 
 module.exports = { checkInputsPresent,validateName,validateLogoLink, validateEmail, validateMobileNo, isValidPincode ,validateId ,isValidPassword,isValidImageType,isValidPrice,isValidNumber}

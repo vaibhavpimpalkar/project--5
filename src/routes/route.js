@@ -17,7 +17,7 @@ router.put('/user/:userId/profile', Auth.authentication,Auth.authorization ,user
 router.post('/products', ProductController.createProduct)
 router.get('/products', ProductController.getProduct)
 router.get('/products/:productId', ProductController.getProductsById)
-router.put('/products/:productId', ProductController.updateProductDetails)
+//router.put('/products/:productId', ProductController.updateProductDetails)
 router.delete('/products/:productId', ProductController.deleteProductById)
 
 
