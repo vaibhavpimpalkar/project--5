@@ -84,7 +84,7 @@ const createProduct = async function (req, res) {
         }
         // if (isFreeShipping) {
 
-        //     if ((isFreeShipping !== false) || (isFreeShipping !== true))
+        //     if ((isFreeShipping !== false) && (isFreeShipping !== true))
         //         return res.status(400).send({ status: false, message: "isFreeShipping must be either true or false", });
         // }
 

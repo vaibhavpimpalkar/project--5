@@ -16,11 +16,11 @@ const createUser = async function (req, res) {
     //-------------------------------using destructuring fetching data from request body------------------------------//
         let { fname, lname, email, phone, password, address } = data;
 
-        if (!validation.checkInputsPresent(fname))return res.status(400).send({ status: false, msg: "name is required" });
-        if (!validation.validateName(fname))return res.status(400).send({ status: false, msg: "name is invalid " });
+        if (!validation.checkInputsPresent(fname))return res.status(400).send({ status: false, msg: "first name is required" });
+        if (!validation.validateName(fname))return res.status(400).send({ status: false, msg: "first name is invalid " });
         
-        if (!validation.checkInputsPresent(lname)) return res.status(400).send({ status: false, msg: "name is required" });
-        if (!validation.validateName(lname)) return res.status(400).send({ status: false, msg: "name is invalid " });
+        if (!validation.checkInputsPresent(lname)) return res.status(400).send({ status: false, msg: "last name is required" });
+        if (!validation.validateName(lname)) return res.status(400).send({ status: false, msg: "last name is invalid " });
 
         if (!validation.checkInputsPresent(email)) return res.status(400).send({ status: false, msg: "email required to create new user "});
         if (!validation.validateEmail(email)) return res.status(400).send({ status: false, msg: "invalid email provided" });
@@ -65,7 +65,6 @@ const createUser = async function (req, res) {
         // }
             //upload to s3 and get the uploaded link
             // res.send the link back to frontend/postman
-            //let uploadedFileURL= await uploadFile( files[0] )
         
             var uploadedProfilePictureUrl = await AWS.uploadFile(profileImage[0]);
 
@@ -183,13 +182,13 @@ const updateUsersProfile = async function (req, res) {
   
       if (fname) {
     if (!validation.validateName(fname.trim()))
-          return res.status(400).send({status: false, message: "First name must be a string" });
+          return res.status(400).send({status: false, message: "Invalid first name " });
   
         filter.fname = fname
       }
   
     if (lname) {
-    if (!validation.validateName(lname.trim()))return res.status(400).send({status: false,message: "last name must be a string"});
+    if (!validation.validateName(lname.trim()))return res.status(400).send({status: false,message: "Invalid last name "});
         filter.lname = lname;
       }
 
@@ -230,7 +229,7 @@ const updateUsersProfile = async function (req, res) {
         );
   
         if (sameOldPass) {
-          return res.status(400).send({ status: false, message: "You have used this password" });}
+          return res.status(400).send({ status: false, message: "You have used this password already"});}
   
         const salt = await bcrypt.genSalt(10);
         encryptedPassword = await bcrypt.hash(password, salt);
