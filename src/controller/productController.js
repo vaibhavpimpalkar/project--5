@@ -357,7 +357,7 @@ const getProduct = async function (req, res) {
 
             let deletedProduct = await productModel.findByIdAndUpdate(pid, { $set: { isDeleted: true, deletedAt: Date.now() } }, { new: true })
 
-            return res.status(200).send({ status: true, message: "Success", data: deletedProduct })
+            return res.status(200).send({ status: true, message: "Product deleted Successfully"})
 
 
         } catch (err) {
