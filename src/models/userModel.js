@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
     profileImage: {
         type: String,
         required: true,
+
     },
     phone: {
         type: String,
@@ -26,6 +27,8 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+        minLen:8,
+        maxLen:15
     },
     address: {
         shipping: {

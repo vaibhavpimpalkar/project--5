@@ -2,6 +2,7 @@ const express  = require("express")
 const router =express.Router()
 const userController = require('../controller/userController')
 const ProductController = require('../controller/productController');
+const CartController = require('../controller/cartController');
 const Auth = require('../middleware/auth')
 
 
@@ -19,6 +20,12 @@ router.get('/products', ProductController.getProduct)
 router.get('/products/:productId', ProductController.getProductsById)
 router.put('/products/:productId', ProductController.updateProduct)
 router.delete('/products/:productId', ProductController.deleteProductById)
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>API's for Cart>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
+
+router.post('/users/:userId/cart', Auth.authentication, Auth.authorization, CartController.addProductTocart)
+router.put('/users/:userId/cart', Auth.authentication, Auth.authorization, CartController.removeProductFromCart)
+router.get('/users/:userId/cart', Auth.authentication, CartController.getCart)
 
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>AWS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//

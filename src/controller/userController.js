@@ -59,10 +59,10 @@ const createUser = async function (req, res) {
         
         if (!profileImage || profileImage.length==0)return res.status(400).send({ status: true, message: "Provide profileImage for Users" })
 
-        // if(!validation.isValidImageType(profileImage)){
-        //     return res.status(400).send({status:false, msg:" Only images can be uploaded (jpeg/jpg/png)"})
+        if(!validation.isValidImageType(profileImage)){
+            return res.status(400).send({status:false, msg:" Only images can be uploaded (jpeg/jpg/png)"})
     
-        // }
+        }
             //upload to s3 and get the uploaded link
             // res.send the link back to frontend/postman
         
