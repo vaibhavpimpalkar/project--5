@@ -53,7 +53,7 @@ const createProduct = async function (req, res) {
             return res.status(400).send({ status: false, msg: "please provide productImage" })
         }
 
-        if(!validation.isValidImageType(productImage)){
+        if(!validation.isValidImageType(productImage[0].mimetype)){
             return res.status(400).send({status:false, msg:" Only images can be uploaded (jpeg/jpg/png)"})
 
         }
