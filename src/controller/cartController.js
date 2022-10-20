@@ -8,26 +8,30 @@ const addProductTocart = async function (req, res) {
 
         let requestBody = req.body;
 
-        let userIdFromParam = req.params.userId
+        let userIdFromParam = req.params.userId;
+
 
         let { cartId, productId } = requestBody;
 
-        if (!validation.validateId(productId)) {
-            return res.status(400).send({ status: false, msg: "invalid ProductId" })
-        }
+        if (!validation.validateId(productId))
+            return res.status(400).send({ status: false, message: "Invalid productId" });
 
-        const productById = await productModel.findById(productId).lean()
+        const productById = await productModel.findById(productId)
         if (!productById) {
-            return res.status(404).send({ status: false, message: "product not found" })
+            return res.status(404).send({ status: false, message: " product not found" })
         }
 
         if (productById.isDeleted == true) {
-            return res.status(404).send({ status: false, message: "product is deleted" })
+            return res.status(404).send({ status: false, message: " product is deleted" })
+        }
+
+        if (productById.installments === 0) {
+            return res.status(400).send({ status: false, message: "product is out of stock" });
         }
 
         const userCart = await cartModel.findOne({ userId: userIdFromParam })
 
-        //if cart doesn't exist for the given userId of user
+        //if cart doesn't exist for the user
         if (!userCart) {
             let filter = {}
 
@@ -41,13 +45,15 @@ const addProductTocart = async function (req, res) {
 
             let productDataAll = await cartModel.findOne({ userId: userIdFromParam }).populate('items.productId')
 
-            return res.status(200).send({ status: true, message: "New cart created with products", data: productDataAll, });
+            return res.status(200) .send({ status: true, message: "New cart created with products", data: productDataAll, });
 
         }
         if (userCart._id != cartId) {
-            return res.status(400).send({ status: false, message: "cart doesn't exist" });
+            return res.status(400).send({ status: false, message: "cart doesnot exist" });
         }
+
         //if usercart is created but cart is empty
+
         if (userCart.items.length === 0) {
             const addedProduct = {
                 productId: productId,
@@ -61,11 +67,13 @@ const addProductTocart = async function (req, res) {
             };
 
             const newItemInCart = await cartModel.findOneAndUpdate({ userId: userIdFromParam },
-                { $set: cartData }, { new: true }).populate('items.productId')
+                { $set: cartData }, { new: true }).populate('items.productId');
 
-            // const newCart = await CartModel.findOneAndUpdate({ userId: userId }, { $set: cartData }, { new: true });
-
-            return res.status(200).send({ status: true, message: "Product added to cart", data: newItemInCart });
+            return res.status(200).send({
+                status: true,
+                message: "Product added to cart",
+                data: newItemInCart,
+            });
         }
         //for checking if product exist in cart
         {
@@ -74,20 +82,23 @@ const addProductTocart = async function (req, res) {
             console.log(productExistInCart)
 
             //if provided product does exist in cart
+
             if (productExistInCart > -1) {
 
                 const increasedProductQuantity = await cartModel.findOneAndUpdate({ userId: userIdFromParam, "items.productId": productId }, {
-                    $inc: { totalPrice: +productById.price, totalItems: +1, "items.$.quantity": +1 },
+                    $inc: { totalPrice: +productById.price, "items.$.quantity": +1 },
                 }, { new: true }).populate('items.productId')
 
-                return res.status(200).send({ status: true, message: "Product quantity and price updated in the cart", data: increasedProductQuantity });
+
+                return res.status(200)
+                    .send({ status: true, message: "Product quantity and price updated in the cart", data: increasedProductQuantity });
             }
-            //if provided product does not exist in cart
+            //if provided product doesn't exist in cart
             if (productExistInCart == -1) {
                 const updatedProductQuantity = await cartModel.findOneAndUpdate({ userId: userIdFromParam },
-                    {
-                        $push: { items: { productId: productId, quantity: 1 } }, $inc: { totalPrice: +productById.price, totalItems: +1 },
-                    }, { new: true }).populate('items.productId')
+                    { $push: { items: { productId: productId, quantity: 1 } }, $inc: { totalPrice: +productById.price, totalItems: +1 }, }, { new: true }).populate('items.productId')
+
+
                 return res.status(200).send({ status: true, message: "product updated to cart", data: updatedProductQuantity });
             }
         }
@@ -99,7 +110,6 @@ const addProductTocart = async function (req, res) {
     }
 
 }
-
 
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>getCardDetails>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
@@ -190,8 +200,10 @@ const removeProductFromCart = async function (req, res) {
                             $inc: { totalItems: -1, totalPrice: -productById.price },
                         }, { new: true }).populate("items.productId")
 
-                    return res.status(200).send({status: true, message: "Single product is completely removed from the cart",
-                    data: deleteWholeProduct});
+                    return res.status(200).send({
+                        status: true, message: "Single product is completely removed from the cart",
+                        data: deleteWholeProduct
+                    });
                 }
 
                 if (userCart.items[productExistInCart].quantity > 1) {
@@ -200,7 +212,7 @@ const removeProductFromCart = async function (req, res) {
                         { $inc: { totalItems: -1, totalPrice: -productById.price, "items.$.quantity": -1 } }, { new: true }).populate("items.productId");
 
 
-                    return res.status(200).send({status: true,message: "Product Quantity is decreased from the cart", data: reduceProductQuantity});
+                    return res.status(200).send({ status: true, message: "Product Quantity is decreased from the cart", data: reduceProductQuantity });
                 }
 
 
@@ -215,7 +227,7 @@ const removeProductFromCart = async function (req, res) {
                         $inc: { totalItems: -((userCart.items[productExistInCart]).quantity), totalPrice: -(productById.price * ((userCart.items[productExistInCart]).quantity)) },
                     }, { new: true }).populate("items.productId")
 
-                return res.status(200).send({status: true,message: "The whole product is removed",data: removeWholeProducts,});
+                return res.status(200).send({ status: true, message: "The whole product is removed", data: removeWholeProducts, });
             }
 
 
