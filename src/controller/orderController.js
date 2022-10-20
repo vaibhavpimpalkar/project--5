@@ -12,9 +12,15 @@ const createOrder = async function (req, res) {
         if (!validation.validateId(userIdfromParam)) {
             return res.status(400).send({ status: false, msg: "Invalid userId" })
         }
+        
+        if(!validation.checkInputsPresent(data)){
+            return res.status(400).send({status:false, message:"Provide data for create Order"})
+        }
 
         // using destructuring
         let { cartId, cancellable } = data;
+
+        
 
         if (!validation.validateId(cartId)) {
             return res.status(400).send({ status: false, msg: "Invalid cartId" })
@@ -74,6 +80,10 @@ const updateOrderStatus = async function (req, res) {
         
         let userIdfromParam = req.params.userId
         let data = req.body
+
+        if(!validation.checkInputsPresent(data)){
+            return res.status(400).send({status:false, message:"Provide data for Update Order"})
+        }
 
         let { orderId,status } = data
         

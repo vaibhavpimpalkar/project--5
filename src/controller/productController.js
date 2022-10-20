@@ -82,12 +82,7 @@ const createProduct = async function (req, res) {
             availableSizes = availableSizes.concat(sizeArr.filter((item) => availableSizes.indexOf(item) < 0))
 
         }
-        // if (isFreeShipping) {
-
-        //     if ((isFreeShipping !== false) && (isFreeShipping !== true))
-        //         return res.status(400).send({ status: false, message: "isFreeShipping must be either true or false", });
-        // }
-
+       
         if (!validation.isValidinstallments(installments))
             return res.status(400).send({ status: false, message: "installments is invalid", });
 
@@ -165,7 +160,7 @@ const getProduct = async function (req, res) {
  const getProductsById = async function (req, res) {
 
         try {
-            // request productId from path path param
+            // request productId from path param
 
             const productId = req.params.productId;
 
@@ -192,10 +187,14 @@ const getProduct = async function (req, res) {
         try {
             let requestBody = req.body;
 
+            if(!validation.checkInputsPresent(requestBody)){
+                return res.status(400).send({status:false, message:"Provide data for Updation"})
+            }
+
             productIdFromParam = req.params.productId
 
             if (!(validation.validateId(productIdFromParam))) {
-                return res.status(400).send({ status: false, message: " Please!! input a valid Id :(" });
+                return res.status(400).send({ status: false, message: "Invalid ProductId" });
             }
 
             let productById = await productModel.findById(productIdFromParam)

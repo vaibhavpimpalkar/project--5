@@ -86,7 +86,7 @@ const createUser = async function (req, res) {
         const newUser = await userModel.create(userData);
         res.status(201).send({ status: true, message: "User successfully registered",data: newUser});
     } catch (error) {
-        res.status(500).send({ status:false,error: error.message });
+        res.status(500).send({ status:false, message: error.message });
     }
 };
 
@@ -166,7 +166,11 @@ const updateUsersProfile = async function (req, res) {
   
       let filter = {};
   
-      let { fname, lname, email, phone, password, address } = requestBody;
+      let { fname, lname, email, phone, password,address } = requestBody;
+
+      if(!validation.checkInputsPresent(requestBody)){
+        return res.status(400).send({status:false, message:"Provide data for Updation"})
+      }
   
       if (req.files) {
         let profileImage = req.files

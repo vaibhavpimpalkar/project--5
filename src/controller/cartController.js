@@ -150,6 +150,10 @@ const removeProductFromCart = async function (req, res) {
         let { cartId, productId, removeProduct } = requestBody;
         console.log(removeProduct)
 
+        if(!validation.checkInputsPresent(requestBody)){
+            return res.status(400).send({status:false, message:"Provide data for remove product"})
+        }
+
         if (!validation.validateId(productId)) {
             return res.status(400).send({ status: false, msg: "invalid ProductId" })
         }
