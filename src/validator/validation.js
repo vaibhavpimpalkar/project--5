@@ -14,7 +14,7 @@ const validateName = (name) => { return (/^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$
 
 const validateEmail = (email) => { return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)); }
 
-const validateMobileNo = (number) => { return (/^(\+\d{1,3}[- ]?)?\d{10}$/.test(number)); }
+const validateMobileNo = (number) => { return (/^[6-9]{1}[0-9]{9}$/.test(number)); }
 
 const isValidPassword = function (password) {
     return (/^[a-zA-Z0-9!@#$%^&*]{8,15}$/.test(password))

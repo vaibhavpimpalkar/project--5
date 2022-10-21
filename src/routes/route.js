@@ -39,9 +39,5 @@ router.put('/users/:userId/orders', Auth.authentication, Auth.authorization, Ord
 
 router.all("/*",(req,res)=>{res.status(400).send({status:false,message:"Invalid Path Param"})})
 
-
-
-
-
 //.................................................................................................................//
 module.exports = router;
