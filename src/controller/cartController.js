@@ -79,7 +79,7 @@ const addProductTocart = async function (req, res) {
         {
             let productExistInCart = userCart.items.findIndex(items => items.productId == requestBody.productId);
 
-            console.log(productExistInCart)
+            // console.log(productExistInCart)
 
             //if provided product does exist in cart
 
@@ -181,7 +181,7 @@ const removeProductFromCart = async function (req, res) {
 
         const productExistInCart = userCart.items.findIndex(items => items.productId == requestBody.productId);
 
-        console.log(productExistInCart)
+        // console.log(productExistInCart)
 
         //if provided productId product does exist in cart
         if (productExistInCart == -1) {

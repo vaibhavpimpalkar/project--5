@@ -1,6 +1,6 @@
 const orderModel = require("../models/orderModel");
 const cartModel = require("../models/cartModel");
-const productModel = require("../models/productModel");
+// const productModel = require("../models/productModel");
 const validation = require("../validator/validation");
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>createOrder>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
@@ -36,7 +36,7 @@ const createOrder = async function (req, res) {
         }
 
         //checking given userId user cart is empty 
-        if (userCartDetail.items.length === 0) {
+        if (userCartDetail.items.length === 0) { 
             return res.status(400).send({ status: false, message: "Cart is empty" });
         }
 
@@ -80,7 +80,7 @@ const updateOrderStatus = async function (req, res) {
       let userIdFromParam = req.params.userId;
       let requestBody = req.body;
   
-      const { orderId, status } = requestBody;
+      const { orderId, status  } = requestBody;
   
       if (!validation.checkInputsPresent(requestBody)) {
         return res.status(400).send({ status: false, message: "Order data is required " })}

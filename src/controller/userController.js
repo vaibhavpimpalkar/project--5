@@ -58,7 +58,7 @@ const createUser = async function (req, res) {
         if (!validation.isValidPincode(address.billing.pincode)) {return res.status(400).send({ status: false, message: "Invalid pincode" });}
         
         if (!profileImage || profileImage.length==0)return res.status(400).send({ status: true, message: "Provide profileImage for Users" })
-         console.log(profileImage)
+        //  console.log(profileImage)
         if(!validation.isValidImageType(profileImage[0].mimetype)){
             return res.status(400).send({status:false, msg:" Only images can be uploaded (jpeg/jpg/png)"})
     
